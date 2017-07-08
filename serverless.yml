@@ -1,0 +1,60 @@
+service: ec2-remote
+
+provider:
+    name: aws
+    runtime: python2.7
+    stage: dev
+    region: us-east-1
+    memorySize: 128
+    versionFunctions: false
+    cfLogs: true
+    iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+              - "ec2:DescribeInstances"
+              - "ec2:StartInstances"
+              - "ec2:StopInstances"
+          Resource: "*"
+package:
+    exclude:
+        - .npmignore
+        - bin/**
+functions:
+    ec2-status:
+        handler: handler.ec2_status
+        description: Status ec2 instances
+        timeout: 30
+        events:
+            - http:
+                path: ec2/status/{name}
+                method: get
+                private: true
+    ec2-start:
+        handler: handler.ec2_start
+        description: Start ec2 instances
+        timeout: 30
+        events:
+            - http:
+                path: ec2/start/{name}
+                method: get
+                private: true
+    ec2-stop:
+        handler: handler.ec2_stop
+        description: Stop ec2 instances
+        timeout: 30
+        events:
+            - http:
+                path: ec2/stop/{name}
+                method: get
+                private: true
+resources:
+    Resources:
+        Ec2DashstatusLogGroup:
+            Properties:
+                RetentionInDays: "7"
+        Ec2DashstartLogGroup:
+            Properties:
+                RetentionInDays: "7"
+        Ec2DashstopLogGroup:
+            Properties:
+                RetentionInDays: "7"
