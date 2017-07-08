@@ -125,7 +125,7 @@ curl -H "x-api-key: AWS_API_KEY" https://API_ID.execute-api.us-east-1.amazonaws.
 Once you have an api, you can call it from where ever you want. Since we (or I) want to use a phone as a remote, we'll use [Workflow on iOS](https://workflow.is). 
 
 - Download the app from the app store - https://workflow.is/download
-- Launch ./files/EC2%20Remote%20Sample.wflow?raw=true in Safari on your iOS device
+- Launch https://github.com/khilnani/ec2-remote.serverless/blob/master/files/EC2%20Remote%20Sample.wflow?raw=true in Safari on your iOS device
     - Open the file using the Workflow app. 
     - It will create a workflow called 'EC2 Remote Sample'
 - Replace `api_url` with the url from the deployment stack output.
