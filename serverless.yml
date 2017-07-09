@@ -28,7 +28,7 @@ functions:
             - http:
                 path: ec2/status/{name}
                 method: get
-                private: true
+                private: false
     ec2-start:
         handler: handler.ec2_start
         description: Start ec2 instances
@@ -37,7 +37,7 @@ functions:
             - http:
                 path: ec2/start/{name}
                 method: get
-                private: true
+                private: false
     ec2-stop:
         handler: handler.ec2_stop
         description: Stop ec2 instances
@@ -46,7 +46,7 @@ functions:
             - http:
                 path: ec2/stop/{name}
                 method: get
-                private: true
+                private: false
 resources:
     Resources:
         Ec2DashstatusLogGroup:

@@ -85,7 +85,7 @@ pip install --upgrade -t site-packages/ -r requirements.txt`
 - Next, deploy the service - `s-deploy` or `serverless deploy --verbose`. 
     - This will package and deploy your Lambda function and create the API endpoint
     - Once complete, it will display information about the stack. e.g. The API endpoint URL you need below
-    - The resources used will be prefixed with `dev-ec2-remote-` in AWS Lambda, AWS API Gateway and AWS CloudWatch logs.
+    - The resources used will be prefixed with `ec2-remote-dev` in AWS Lambda, AWS API Gateway and AWS CloudWatch logs.
     - Logs are setup to expire after 7 days.
     - Details are available in `serverless.yaml`
 - If you need to get the info again, run `s-info` or `serverless info --verbose`
@@ -112,7 +112,7 @@ In most cases you will want to secure access to this API. We'll do this using an
 
 - Create an API Key - https://console.aws.amazon.com/apigateway/home?region=us-east-1#/api-keys
 - Create a Usage Plan - https://console.aws.amazon.com/apigateway/home?region=us-east-1#/usage-plans
-    - Add the API (`dev-ec2-remote`) and API Key you created to the Usage Plan.
+    - Add the API (`ec2-remote-dev`) and API Key you created to the Usage Plan.
 - Update `private` to `true` in the `serverless.yaml` method definition for the `unread` function 
 - Make API calls with the Request Header `x-api-key: APIKEY`. 
 - Example:
