@@ -132,6 +132,6 @@ Once you have an api, you can call it from where ever you want. Since we (or I) 
   - `https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2`
   - Note, there is no ending '/'
 - Replace `api_key` with the AWS API Key created earlier
-- Edit the list with `INSTANCE_TAG_NAME` with names (tag:name) for the iEC2 instances you want to control, one instane name per line.
+- Edit the list with `INSTANCE_TAG_NAME` with names (tag:name) for the iEC2 instances you want to control, one instance name per line.
 - Run the workflow!
 
