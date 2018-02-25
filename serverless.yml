@@ -15,11 +15,23 @@ provider:
               - "ec2:StartInstances"
               - "ec2:StopInstances"
           Resource: "*"
+    environment:
+        EC2_FILTER_TAG: ec2-remote-public
+        EC2_MONITOR_TAG: ec2-remote-monitor
 package:
     exclude:
         - .npmignore
         - bin/**
 functions:
+    ec2-list:
+        handler: handler.ec2_list
+        description: List ec2 instances
+        timeout: 30
+        events:
+            - http:
+                path: ec2/list
+                method: get
+                private: false
     ec2-status:
         handler: handler.ec2_status
         description: Status ec2 instances
@@ -49,6 +61,9 @@ functions:
                 private: false
 resources:
     Resources:
+        Ec2DashlistLogGroup:
+            Properties:
+                RetentionInDays: "7"
         Ec2DashstatusLogGroup:
             Properties:
                 RetentionInDays: "7"

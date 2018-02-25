@@ -90,10 +90,47 @@ pip install --upgrade -t site-packages/ -r requirements.txt`
     - Details are available in `serverless.yaml`
 - If you need to get the info again, run `s-info` or `serverless info --verbose`
 
+# Whitelist EC2 Instances
+
+Even though you may secure the API with an api key, you may want to tag the EC2 instances available to this API so that:
+
+1. Limit the EC2 instances that can be controlled by this API, and
+2. Auto-list the instances available (to avoid memorizing the names) via the *list* endpoint
+
+> The tag Key can be customized in the `serverless.yml` file
+
+Tag info to use:
+
+- Key: `ec2-remote-filter`
+- Value: `true`
+
+# Automated Alerts for Running instances
+
+If you like to be alerted if instances are left running for more than a day, you can tag them using the info below
+and set an email address an alert should be sent to. 
+
+> The tag Key and schedule can be customized in the `serverless.yml` file
+
+Tag info to use:
+
+- Key: `ec2-remote-monitor`
+- Value: `true`
+
 # Test the API
 
 > Don't forget to replace `INSTANCE_TAG_NAME`  and `API_ID` (Output from serverless deploy)
 > By default, the API is public. CHeck the section below to make it secure/private.
+
+Descptive Endpoints
+
+- List - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/list/
+Sample JSON Output:
+```
+{
+    "message": ["name1", "name2"]
+}
+```
+Action Endpoints
 
 - Status - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/status/INSTANCE_NAME
 - Stop - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/stop/INSTANCE_NAME

@@ -11,6 +11,42 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 
+
+def get_filter_tag():
+    tag = os.environ['EC2_FILTER_TAG']
+    return tag
+
+def get_monitor_tag():
+    tag = os.environ['EC2_MONITOR_TAG']
+    return tag
+
+def get_instances(client, event):
+    """Return a list of instances based on the tag in serverles.yml"""
+
+    instance_names = []
+    error_message = None
+    filter_tag = get_filter_tag()
+
+    r = client.describe_instances(
+            Filters=[
+                {'Name':'tag-key', 'Values':[filter_tag]}
+                ]
+        )
+    # AWS' boto3 api involves a lot of looping
+    if len(r['Reservations']) > 0:
+        for res in r['Reservations']:
+            for ins in res['Instances']:
+                ins_id = ins['InstanceId']
+                tags = ins['Tags']
+                for tag in tags:
+                    if tag['Key'] == "Name":
+                        instance_names.append( tag['Value'] )
+    else:
+        error_message = 'Unable to find instances'
+
+    print(error_message, instance_names)
+    return (error_message, instance_names)
+
 def get_instance(client, event):
     """Find an instance's id and status based on the Name tag given to it.
     Assumes the name tag is unique. if not, will pick the first"""
@@ -19,6 +55,7 @@ def get_instance(client, event):
     instance_id = None
     instance_state = None
     error_message = None
+    filter_tag = get_filter_tag()
 
     # Get the instance name from the path
     try:
@@ -29,7 +66,10 @@ def get_instance(client, event):
 
     if instance_name:
         r = client.describe_instances(
-                Filters=[{'Name':'tag:Name', 'Values': [instance_name]}]
+                Filters=[
+                    {'Name':'tag:Name', 'Values': [instance_name]},
+                    {'Name':'tag-key', 'Values':[filter_tag]}
+                    ]
             )
         # AWS' boto3 api involves a lot of looping
         if len(r['Reservations']) > 0:
@@ -51,8 +91,33 @@ def get_instance(client, event):
     print(error_message, instance_name, instance_id, instance_state)
     return (error_message, instance_name, instance_id, instance_state)
 
+
+def ec2_list(event, context):
+    """Return a list of instances based on the tag in serverles.yml"""
+    body = {}
+    status_code = 200
+
+    try:
+        client = boto3.client('ec2')
+        # Find the instance
+        error, instance_names = get_instances(client, event)
+        if error:
+            body["message"] = error
+        else:
+            body["message"] = instance_names
+    except Exception as e:
+        print(traceback.format_exc())
+        status_code = 500
+        body["message"] = str(e)
+
+    response = {
+        "statusCode": status_code,
+        "body": json.dumps(body)
+    }
+    return response
+
 def ec2_status(event, context):
-    """Take an instance tag:name via an API call and return its status"""
+    """Return the status of the instance requested"""
     body = {}
     status_code = 200
 
