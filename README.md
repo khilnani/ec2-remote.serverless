@@ -106,7 +106,7 @@ Tag info to use:
 
 # Automated Alerts for Running instances
 
-If you like to be alerted if instances are left running for more than a day, you can tag them using the info below
+If you would like to be alerted if instances are left running for more than a day, you can tag them using the info below
 and set an email address an alert should be sent to. 
 
 > The tag Key and schedule can be customized in the `serverless.yml` file
@@ -130,6 +130,7 @@ Sample JSON Output:
     "message": ["name1", "name2"]
 }
 ```
+
 Action Endpoints
 
 - Status - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/status/INSTANCE_NAME
