@@ -97,9 +97,9 @@ Even though you may (and should) secure the API with an api key, you will need t
 1. Limit which EC2 instances that can be controlled by this API, and
 2. Auto-list the instances available (to avoid memorizing the names) via the *list* endpoint
 
-> The tag Key can be customized in the `serverless.yml` file
-
 Tag info to use:
+
+> The tag Key can be customized in the `serverless.yml` file
 
 - Key: `ec2-remote-filter`
 - Value: `true`
@@ -109,9 +109,13 @@ Tag info to use:
 If you would like to be alerted if instances are left running for more than a day, you can tag them using the info below
 and set an email address an alert should be sent to. 
 
-> The tag Key and schedule can be customized in the `serverless.yml` file
+Email address:
+
+- To specify the email address alerts should be sent to, edit the `environment/EC2_REMOTE_EMAIL`key in the `serverless.yml` 
 
 Tag info to use:
+
+> The tag Key and schedule can be customized in the `serverless.yml` file
 
 - Key: `ec2-remote-monitor`
 - Value: `true`
