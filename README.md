@@ -92,9 +92,9 @@ pip install --upgrade -t site-packages/ -r requirements.txt`
 
 # Whitelist EC2 Instances
 
-Even though you may secure the API with an api key, you may want to tag the EC2 instances available to this API so that:
+Even though you may (and should) secure the API with an api key, you will need to tag EC2 instances to:
 
-1. Limit the EC2 instances that can be controlled by this API, and
+1. Limit which EC2 instances that can be controlled by this API, and
 2. Auto-list the instances available (to avoid memorizing the names) via the *list* endpoint
 
 > The tag Key can be customized in the `serverless.yml` file
