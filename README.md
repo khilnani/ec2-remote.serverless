@@ -32,7 +32,7 @@ We are also going to use the Serverless framework to manage the AWS tech stack.
 > - The role used to setup and deploy is different from the permissions set on the lambda code that runs.
 > - If this concerns you, create a new AWS account to play around with.
 
-### Serverless AWS credentials setup
+### Serverless AWS Credentials Setup
 
 - Follow the instructions at https://serverless.com/framework/docs/providers/aws/guide/credentials/ . They cover the setup pretty well.
 
@@ -76,7 +76,7 @@ We are also going to use the Serverless framework to manage the AWS tech stack.
 - Import helper shortcut commands - `source source.sh`. The commands imported are in the format `s-NAME`.
 - Install Serverless - `s-install` or `npm install -g serverless --upgrade`
 
-# Build and deploy
+# Build and Deploy
 
 - Install Python dependencies that will get packaged and deployed with your Lambda function. 
     - Run `s-requirements`, or
@@ -106,7 +106,7 @@ Tag info to use:
 - Key: `ec2-remote-filter`
 - Value: `true`
 
-# Automated Alerts for Running instances
+# Email Notification of Running Instances
 
 If you would like to be alerted if instances are left running for more than a day, you can tag them using the info below
 and set an email address an alert should be sent to. 
