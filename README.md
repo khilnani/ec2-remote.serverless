@@ -133,7 +133,7 @@ There are two options for testing the email notification:
 Lambda invocation
 
 - `s-run ec2-monitor` - Local code
-- `s-run-remote ec2-monitor` - Code depployed to AWS
+- `s-run-remote ec2-monitor` - Code deployed to AWS
 
 Via the API
 
