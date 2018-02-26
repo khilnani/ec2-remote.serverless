@@ -128,8 +128,16 @@ Tag info to use:
 
 ## The Email Notification
 
+There are two options for testing the email notification:
+
+Lambda invocation
+
 - `s-run ec2-monitor` - Local code
 - `s-run-remote ec2-monitor` - Code depployed to AWS
+
+Via the API
+
+-  https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/check
 
 ## Test the API Endpoints
 
@@ -149,13 +157,24 @@ Sample JSON Output:
 Action Endpoints
 
 - Status - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/status/INSTANCE_NAME
+Sample JSON Output:
+```
+{
+    "message": "i-78ffff49 running"
+}
+```
 - Stop - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/stop/INSTANCE_NAME
-- Start - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/start/INSTANCE_NAME
-
 Sample JSON Output:
 ```
 {
     "message": "i-78ffff49 stopped"
+}
+```
+- Start - https://API_ID.execute-api.us-east-1.amazonaws.com/dev/ec2/start/INSTANCE_NAME
+Sample JSON Output:
+```
+{
+    "message": "i-78ffff49 pending"
 }
 ```
 
