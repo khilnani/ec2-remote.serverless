@@ -21,6 +21,22 @@ s-info () {
     more INFO.md
 }
 
+s-run () {
+    if [ -z "$2" ]; then
+        eval $scmd invoke local -f $1 -l
+    else
+        eval $scmd invoke local -f $1 -l --path $2
+    fi
+}
+
+s-run-remote () {
+    if [ -z "$2" ]; then
+        eval $scmd invoke -f $1 -l
+    else
+        eval $scmd invoke -f $1 -l --path $2
+    fi
+}
+
 s-remove () {
     if [ -n "$ZSH_VERSION" ]; then
         read "?Are you sure you want to continue?"

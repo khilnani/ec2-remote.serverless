@@ -25,9 +25,12 @@ OK, lets get started. There are quite a few steps here and you may need 30 mins 
 
 ## AWS Setup
 
-Since we're working with AWS Lambda and AWS API Gateway, we need to setup AWS credentials. We are also going to use the Serverless framework to manage the AWS tech stack.
+Since we're working with AWS Lambda and AWS API Gateway, we need to setup AWS credentials. 
+We are also going to use the Serverless framework to manage the AWS tech stack.
 
-> Serverless needs a lot of privilages even if manually setup. If this concerns you, create a new AWS account to play around with.
+> - The role Serverless needs requires a lot of privilages. 
+> - The role used to setup and deploy is different from the permissions set on the lambda code that runs.
+> - If this concerns you, create a new AWS account to play around with.
 
 ### Serverless AWS credentials setup
 
@@ -35,14 +38,13 @@ Since we're working with AWS Lambda and AWS API Gateway, we need to setup AWS cr
 
 ### Manual AWS IAM Setup
 
-If you are brave, you can setup the IAM user's role yourself. 
-
 - Create an IAM Group with:
   - Attach Managed Policies:
     - AmazonEC2FullAccess - Start and stop EC2 instances
     - AWSLambdaFullAccess - Create and manage Lambda functions
     - AmazonS3FullAccess - Create a bucket to store the lambda function code
     - CloudWatchLogsFullAccess - Create and manage Cloudwatch logs
+    - AmazonSESFullAccess - Send Emails for alerts
     - AmazonAPIGatewayAdministrator - Create and manage API endpoints
     - IAMFullAccess - Create new role for the Lambda to work with EC2 instances
   - Create Custom Group Policy > Custom Policy:
@@ -112,7 +114,8 @@ and set an email address an alert should be sent to.
 Email address:
 
 - Go to https://console.aws.amazon.com/ses/home?region=us-east-1#verified-senders-email - Add and verify your email address.
-- Edit the `environment/EC2_REMOTE_EMAIL`key in the `serverless.yml` and update the email address.
+- Edit `environment\EC2_EMAIL` in `serverless.yml` and update the email address.
+- Edit `environment\EC2_EMAIL_PREFIX` in `serverless.yml` and update the email subject prefix. The default is `[EC2-Remote]`.
 
 Tag info to use:
 
@@ -121,7 +124,14 @@ Tag info to use:
 - Key: `ec2-remote-monitor`
 - Value: `true`
 
-# Test the API
+# Testing
+
+## The Email Notification
+
+- `s-run ec2-monitor` - Local code
+- `s-run-remote ec2-monitor` - Code depployed to AWS
+
+## Test the API Endpoints
 
 > Don't forget to replace `INSTANCE_TAG_NAME`  and `API_ID` (Output from serverless deploy)
 > By default, the API is public. CHeck the section below to make it secure/private.
