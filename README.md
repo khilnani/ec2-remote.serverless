@@ -111,7 +111,8 @@ and set an email address an alert should be sent to.
 
 Email address:
 
-- To specify the email address alerts should be sent to, edit the `environment/EC2_REMOTE_EMAIL`key in the `serverless.yml` 
+- Go to https://console.aws.amazon.com/ses/home?region=us-east-1#verified-senders-email - Add and verify your email address.
+- Edit the `environment/EC2_REMOTE_EMAIL`key in the `serverless.yml` and update the email address.
 
 Tag info to use:
 
