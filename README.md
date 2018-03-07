@@ -44,6 +44,7 @@ We are also going to use the Serverless framework to manage the AWS tech stack.
     - AWSLambdaFullAccess - Create and manage Lambda functions
     - AmazonS3FullAccess - Create a bucket to store the lambda function code
     - CloudWatchLogsFullAccess - Create and manage Cloudwatch logs
+    - CloudWatchEventsFullAccess - Manage Cloudwatch events
     - AmazonSESFullAccess - Send Emails for alerts
     - AmazonAPIGatewayAdministrator - Create and manage API endpoints
     - IAMFullAccess - Create new role for the Lambda to work with EC2 instances

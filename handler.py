@@ -175,11 +175,14 @@ def ec2_monitor(event, context):
         if error:
             body["message"] = error
         else:
-            email = get_monitor_email()
-            eclient = boto3.client('ses')
-            response = send_email(eclient, email, message, message)
+            if len(instance_names) > 0:
+                email = get_monitor_email()
+                eclient = boto3.client('ses')
+                response = send_email(eclient, email, message, message)
+                body["message"] = response
+            else:
+                body["message"] = message
 
-            body["message"] = response
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
