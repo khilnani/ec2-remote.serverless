@@ -14,6 +14,9 @@ We'll solve this using:
 - [Serverless Framework](https://serverless.com) - Framework to setup and manage AWS resources
 - [Workflow on iOS](https://workflow.is) - Create a Today Widget for instant access - swipe down and click
 
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/asset.png" width="40%" />
+
+
 # Setup
 
 OK, lets get started. There are quite a few steps here and you may need 30 mins to 1 hour depending on your familiarity with AWS. 
