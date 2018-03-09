@@ -14,7 +14,18 @@ We'll solve this using:
 - [Serverless Framework](https://serverless.com) - Framework to setup and manage AWS resources
 - [Workflow on iOS](https://workflow.is) - Create a Today Widget for instant access - swipe down and click
 
-<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/asset.png" width="40%" />
+## Screenshots
+
+> Below are screenshots once the API is setup and in use.
+
+Example email notification:
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/email.jpg" width="40%" />
+
+iOS experience using the Workflow app
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/home-screen.png" width="40%" />
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-list.png" width="40%" />
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/selection-action.png" width="40%" />
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-info.png" width="40%" />
 
 
 # Setup
