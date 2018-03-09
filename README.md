@@ -18,9 +18,7 @@ We'll solve this using:
 
 > Below are screenshots once the API is setup and in use.
 
-<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/email.jpg" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/home-screen.png" width="30%" />
-<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-list.png" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/select-action.png" width="30%" />
-<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-info.png" width="30%" />
+<img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/email.jpg" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/home-screen.png" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-list.png" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/select-action.png" width="30%" /><img src="https://raw.githubusercontent.com/khilnani/ec2-remote.serverless/master/docs/instance-info.png" width="30%" />
 
 
 # Setup
