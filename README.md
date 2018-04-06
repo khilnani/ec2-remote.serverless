@@ -110,7 +110,7 @@ Tag info to use:
 
 > The tag Key can be customized in the `serverless.yml` file
 
-- Key: `ec2-remote-filter`
+- Key: `ec2-remote-public`
 - Value: `true`
 
 # Email Notification of Running Instances
