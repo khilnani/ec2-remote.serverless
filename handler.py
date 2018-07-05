@@ -12,6 +12,9 @@ import boto3
 from botocore.exceptions import ClientError
 
 
+ALL_INSTANCES_NAME = "@all"
+
+
 def get_filter_tag():
     tag = os.environ['EC2_FILTER_TAG']
     return tag
@@ -86,8 +89,26 @@ def get_monitor_instances(client, event):
     print(error_message, instance_names)
     return (error_message, instance_names)
 
+
+def is_get_all_instances(event):
+    """Check if the request is to apply the action to all
+    '@all' is the reserved instance name"""
+
+    instance_name = None
+
+    # Get the instance name from the path
+    try:
+        instance_name = event['pathParameters']['name']
+        print( 'Instance Name: %s' % instance_name)
+    except:
+        instance_name = None
+
+    return (instance_name == ALL_INSTANCES_NAME)
+
+
+
 def get_instances(client, event):
-    """Return a list of instances based on the filter tag in serverles.yml"""
+    """Return a list of instances based on the filter tag in serverless.yml"""
 
     instance_names = []
     error_message = None
@@ -112,6 +133,42 @@ def get_instances(client, event):
 
     print(error_message, instance_names)
     return (error_message, instance_names)
+
+
+
+def get_instances_status(client, event):
+    """Return a list of instances' status based on the filter tag in serverles.yml"""
+
+    instances = []
+    error_message = None
+    filter_tag = get_filter_tag()
+
+    r = client.describe_instances(
+            Filters=[
+                {'Name':'tag-key', 'Values':[filter_tag]}
+                ]
+        )
+    # AWS' boto3 api involves a lot of looping
+    if len(r['Reservations']) > 0:
+        for res in r['Reservations']:
+            for ins in res['Instances']:
+                ins_id = ins['InstanceId']
+                ins_state = ins['State']['Name']
+                tags = ins['Tags']
+                for tag in tags:
+                    if tag['Key'] == "Name":
+                        instances.append({ 
+                                'name': tag['Value'],
+                                'id': ins_id,
+                                'status': ins_state
+                            })
+    else:
+        error_message = 'Unable to find instances'
+
+    print(error_message, instances)
+    return (error_message, instances)
+
+
 
 def get_instance(client, event):
     """Find an instance's id and status based on the Name tag given to it.
@@ -150,7 +207,7 @@ def get_instance(client, event):
                         instance_state = ins_state
                     break
         else:
-	    error_message = 'Unable to find instance with tag:Name - %s' % instance_name
+            error_message = 'Unable to find instance with tag:Name - %s' % instance_name
     else:
         error_message = 'No instance name specified'
 
@@ -206,6 +263,8 @@ def ec2_list(event, context):
         if error:
             body["message"] = error
         else:
+            # Add only if no error
+            instance_names.append(ALL_INSTANCES_NAME)
             body["message"] = instance_names
     except Exception as e:
         print(traceback.format_exc())
@@ -225,12 +284,20 @@ def ec2_status(event, context):
 
     try:
         client = boto3.client('ec2')
-        # Find the instance
-        error, instance_name, instance_id, instance_state = get_instance(client, event)
-        if error:
-            body["message"] = error
+        if is_get_all_instances(event):
+            # Check all instances
+            error, instances = get_instances_status(client, event)
+            if error:
+                body["message"] = error
+            else:
+                body["message"] = instances
         else:
-            body["message"] = str(instance_id) + ' ' + str(instance_state)
+            # Find the instance
+            error, instance_name, instance_id, instance_state = get_instance(client, event)
+            if error:
+                body["message"] = error
+            else:
+                body["message"] = str(instance_id) + ' ' + str(instance_state)
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
