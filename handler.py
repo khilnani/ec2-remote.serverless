@@ -160,7 +160,7 @@ def get_instances_status(client, event):
                         instances.append({ 
                                 'name': tag['Value'],
                                 'id': ins_id,
-                                'status': ins_state
+                                'state': ins_state
                             })
     else:
         error_message = 'Unable to find instances'
@@ -175,8 +175,7 @@ def get_instance(client, event):
     Assumes the name tag is unique. if not, will pick the first"""
 
     instance_name = None
-    instance_id = None
-    instance_state = None
+    instance = None
     error_message = None
     filter_tag = get_filter_tag()
 
@@ -203,16 +202,19 @@ def get_instance(client, event):
                     if ins_state in ('shutting-down', 'terminated'):
                         error_message = 'No action taken. Instance %s is %s' % (ins_id, ins_state)
                     else:
-                        instance_id = ins_id
-                        instance_state = ins_state
+                        instance = { 
+                                'name': instance_name,
+                                'id': ins_id,
+                                'state': ins_state
+                            }
                     break
         else:
             error_message = 'Unable to find instance with tag:Name - %s' % instance_name
     else:
         error_message = 'No instance name specified'
 
-    print(error_message, instance_name, instance_id, instance_state)
-    return (error_message, instance_name, instance_id, instance_state)
+    print(error_message, instance)
+    return (error_message, instance)
 
 
 def ec2_monitor(event, context):
@@ -230,7 +232,7 @@ def ec2_monitor(event, context):
         print(message)
 
         if error:
-            body["message"] = error
+            body["error"] = error
         else:
             if len(instance_names) > 0:
                 email = get_monitor_email()
@@ -243,7 +245,7 @@ def ec2_monitor(event, context):
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
-        body["message"] = str(e)
+        body["error"] = str(e)
 
     response = {
         "statusCode": status_code,
@@ -261,7 +263,7 @@ def ec2_list(event, context):
         # Find the instances
         error, instance_names = get_instances(client, event)
         if error:
-            body["message"] = error
+            body["error"] = error
         else:
             # Add only if no error
             instance_names.append(ALL_INSTANCES_NAME)
@@ -269,7 +271,7 @@ def ec2_list(event, context):
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
-        body["message"] = str(e)
+        body["error"] = str(e)
 
     response = {
         "statusCode": status_code,
@@ -288,20 +290,20 @@ def ec2_status(event, context):
             # Check all instances
             error, instances = get_instances_status(client, event)
             if error:
-                body["message"] = error
+                body["error"] = error
             else:
                 body["message"] = instances
         else:
             # Find the instance
-            error, instance_name, instance_id, instance_state = get_instance(client, event)
+            error, instance = get_instance(client, event)
             if error:
-                body["message"] = error
+                body["error"] = error
             else:
-                body["message"] = str(instance_id) + ' ' + str(instance_state)
+                body["message"] = [instance]
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
-        body["message"] = str(e)
+        body["error"] = str(e)
 
     response = {
         "statusCode": status_code,
@@ -317,22 +319,23 @@ def ec2_start(event, context):
     try:
         client = boto3.client('ec2')
         # Find the instance
-        error, instance_name, instance_id, instance_state = get_instance(client, event)
+        error, instance  = get_instance(client, event)
+        instance_id = instance.get('name')
         if error:
             body["message"] = error
         else:
             # Start the instance
-            r = client.start_instances(InstanceIds=[instance_id])
+            r = client.start_instances(InstanceIds=[instance.get('id')])
             if len(r['StartingInstances']) > 0:
-                instance_state = r['StartingInstances'][0]['CurrentState']['Name']
-                body["message"] = str(instance_id) + ' ' + str(instance_state)
+                instance['state'] = r['StartingInstances'][0]['CurrentState']['Name']
+                body["message"] = [instance]
             else:
                 status_code = 500
-                body["message"] = 'Unable to start: ' + str(instance_id) + ' ' + str(instance_state)
+                body["error"] = 'Unable to start: ' + str(instance_id) + ' ' + str(instance_state)
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
-        body["message"] = str(e)
+        body["error"] = str(e)
 
     response = {
         "statusCode": status_code,
@@ -350,22 +353,22 @@ def ec2_stop(event, context):
         # Get the instance name from the path
         client = boto3.client('ec2')
         # Find the instance
-        error, instance_name, instance_id, instance_state = get_instance(client, event)
+        error, instance = get_instance(client, event)
         if error:
-            body["message"] = error
+            body["error"] = error
         else:
             # Stop the instance
-            r = client.stop_instances(InstanceIds=[instance_id])
+            r = client.stop_instances(InstanceIds=[instance.get('id')])
             if len(r['StoppingInstances']) > 0:
-                instance_state = r['StoppingInstances'][0]['CurrentState']['Name']
-                body["message"] = str(instance_id) + ' ' + str(instance_state)
+                instance['state'] = r['StoppingInstances'][0]['CurrentState']['Name']
+                body["message"] = [instance]
             else:
                 status_code = 500
-                body["message"] = 'Unable to stop: ' + str(instance_id) + ' ' + str(instance_state)
+                body["error"] = 'Unable to stop: ' + str(instance_id) + ' ' + str(instance_state)
     except Exception as e:
         print(traceback.format_exc())
         status_code = 500
-        body["message"] = str(e)
+        body["error"] = str(e)
 
     response = {
         "statusCode": status_code,

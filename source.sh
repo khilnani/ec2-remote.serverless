@@ -4,6 +4,8 @@ scmd="serverless  "
 
 s-install () {
     npm install -g serverless --upgrade
+    npm install -g serverless-domain-manager
+    npm install serverless-domain-manager --save-dev
 }
 
 s-requirements () {
@@ -36,6 +38,7 @@ s-run-remote () {
         eval $scmd invoke -f $1 -l --path $2
     fi
 }
+
 
 s-remove () {
     if [ -n "$ZSH_VERSION" ]; then
