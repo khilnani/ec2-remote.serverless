@@ -25,6 +25,15 @@ package:
     exclude:
         - .npmignore
         - bin/**
+# plugins:
+#    - serverless-domain-manager
+# custom:
+#    customDomain:
+#        domainName: SUB.DOMAIN.COM
+#        basePath: 'ec2'
+#        stage: ${self:provider.stage}
+#        createRoute53Record: true
+#        endpointType: 'regional'
 functions:
     ec2-monitor:
         handler: handler.ec2_monitor
