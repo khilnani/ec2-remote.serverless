@@ -1,4 +1,5 @@
 **/**.pyc
 **.pyc
 .serverless/
+node_modules/
 INFO.md
