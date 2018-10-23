@@ -3,3 +3,4 @@
 .serverless/
 node_modules/
 INFO.md
+package-lock.json
