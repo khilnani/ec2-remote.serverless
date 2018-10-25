@@ -25,6 +25,7 @@ package:
     exclude:
         - .npmignore
         - bin/**
+# Uncomment below for domain support
 # plugins:
 #    - serverless-domain-manager
 # custom:
