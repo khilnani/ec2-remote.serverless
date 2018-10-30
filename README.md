@@ -45,7 +45,9 @@ We are also going to use the Serverless framework to manage the AWS tech stack.
 ### Manual AWS IAM Setup
 
 - Create an IAM Group with:
-  - Attach Managed Policies:
+  - Quick and Dirty for Dev - Admin:
+    - AdministratorAccess - Full admin access
+  - Specific Policies:
     - AmazonEC2FullAccess - Start and stop EC2 instances
     - AWSLambdaFullAccess - Create and manage Lambda functions
     - AmazonS3FullAccess - Create a bucket to store the lambda function code
@@ -74,7 +76,7 @@ We are also going to use the Serverless framework to manage the AWS tech stack.
 }
 ```
 - Create an IAM User and assign the User the newly created Group
-- Setup AWS credentials with this user's security credentials. Check the above link since it has a good overview.
+- Setup AWS credentials with this user's security credentials. Check https://serverless.com/framework/docs/providers/aws/guide/credentials/
 
 ## Code Setup
 
